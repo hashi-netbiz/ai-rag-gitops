@@ -10,9 +10,9 @@ resources:
 
 images:
   - name: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/backend
-    newTag: placeholder
+    newTag: sha-352678a45843077f5de5878deacdb9977eaf1ba3
   - name: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/frontend
-    newTag: placeholder
+    newTag: sha-352678a45843077f5de5878deacdb9977eaf1ba3
 
 patches:
   - path: patch-backend-env.yaml
