@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rag-staging
+  namespace: argocd
+spec:
+  project: rag-project
+  source:
+    repoURL: https://github.com/hashi-netbiz/ai-rag-gitops
+    targetRevision: main
+    path: k8s/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rag-staging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

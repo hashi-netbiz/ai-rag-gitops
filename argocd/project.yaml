@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: rag-project
+  namespace: argocd
+spec:
+  description: RAG RBAC Chatbot GitOps project
+  sourceRepos:
+    - https://github.com/hashi-netbiz/ai-rag-gitops
+  destinations:
+    - namespace: rag-staging
+      server: https://kubernetes.default.svc
+    - namespace: rag-prod
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace

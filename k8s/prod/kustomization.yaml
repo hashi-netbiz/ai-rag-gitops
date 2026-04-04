@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: rag-prod
+
+resources:
+  - ../base/backend
+  - ../base/frontend
+  - ingress.yaml
+
+images:
+  - name: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/backend
+    newTag: placeholder
+  - name: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/frontend
+    newTag: placeholder
+
+patches:
+  - path: patch-backend-env.yaml
+  - path: patch-frontend-env.yaml
+  - path: patch-replicas.yaml

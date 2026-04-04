@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rag-prod
+  namespace: argocd
+spec:
+  project: rag-project
+  source:
+    repoURL: https://github.com/hashi-netbiz/ai-rag-gitops
+    targetRevision: main
+    path: k8s/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rag-prod
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false
