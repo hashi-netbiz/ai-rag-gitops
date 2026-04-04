@@ -18,6 +18,7 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
+        runAsUser: 1000
       containers:
         - name: frontend
           image: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/frontend:latest
