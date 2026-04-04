@@ -4,16 +4,18 @@ kind: Kustomization
 namespace: rag-staging
 
 resources:
-  - ../base/backend
-  - ../base/frontend
-  - ingress.yaml
+- ../base/backend
+- ../base/frontend
+- ingress.yaml
 
 images:
-  - name: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/backend
-    newTag: sha-352678a45843077f5de5878deacdb9977eaf1ba3
-  - name: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/frontend
-    newTag: sha-352678a45843077f5de5878deacdb9977eaf1ba3
+- name: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/backend
+  newName: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/backend
+  newTag: sha-352678a45843077f5de5878deacdb9977eaf1ba3
+- name: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/frontend
+  newName: 891612574910.dkr.ecr.us-east-1.amazonaws.com/hashi-netbiz/ai-rag-project/frontend
+  newTag: sha-352678a45843077f5de5878deacdb9977eaf1ba3
 
 patches:
-  - path: patch-backend-env.yaml
-  - path: patch-frontend-env.yaml
+- path: patch-backend-env.yaml
+- path: patch-frontend-env.yaml
