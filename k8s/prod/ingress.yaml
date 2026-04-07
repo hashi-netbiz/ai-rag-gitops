@@ -7,6 +7,9 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/subnets: subnet-0e9276611273865b0,subnet-0a454082366c3f5e8
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:891612574910:certificate/31447410-9033-46b5-8651-7088441ad29f
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
 spec:
   rules:
     - host: cloudnetbiz.com
