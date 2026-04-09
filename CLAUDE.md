@@ -88,6 +88,13 @@ argocd app wait rag-prod --sync --health --timeout 300
 # Bootstrap — one-time cluster setup (run once after terraform apply)
 bash argocd/bootstrap.sh
 
+# Teardown — destroy all cluster components then run terraform destroy
+# (orders deletion carefully so ALB Controller removes ALBs before infra is gone)
+GITOPS_CONFIRM=yes bash argocd/teardown.sh
+
+# Rebuild — full destroy + re-provision (teardown → terraform apply → bootstrap)
+GITOPS_CONFIRM=yes GITOPS_TOKEN=<PAT> bash argocd/rebuild.sh
+
 # kubectl — check staging pods
 kubectl get pods -n rag-staging
 
@@ -320,6 +327,8 @@ exists — inspect and skip safely.
 | `argocd/staging-app.yaml` | ArgoCD staging app config — auto-sync policy lives here |
 | `argocd/prod-app.yaml` | ArgoCD production app config — no automated sync |
 | `argocd/bootstrap.sh` | One-time cluster setup runbook |
+| `argocd/teardown.sh` | Ordered cluster + infra destruction (prevents ALB leaks) |
+| `argocd/rebuild.sh` | Full destroy + re-provision wrapper (teardown → apply → bootstrap) |
 
 ---
 
