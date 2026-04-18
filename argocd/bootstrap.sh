@@ -11,11 +11,28 @@ aws eks update-kubeconfig --region "$REGION" --name "$CLUSTER_NAME"
 echo "==> Step 2: Install AWS Load Balancer Controller"
 helm repo add eks https://aws.github.io/eks-charts
 helm repo update
+VPC_ID=$(aws eks describe-cluster --name "$CLUSTER_NAME" --region "$REGION" \
+  --query "cluster.resourcesVpcConfig.vpcId" --output text)
+
 helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
   --set clusterName="$CLUSTER_NAME" \
   --set serviceAccount.create=true \
-  --set serviceAccount.name=aws-load-balancer-controller
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set vpcId="$VPC_ID"
+
+kubectl wait --for=condition=available deployment/aws-load-balancer-controller \
+  -n kube-system --timeout=120s
+
+echo "    Waiting for ALB webhook endpoint to become ready..."
+until kubectl get endpoints aws-load-balancer-webhook-service -n kube-system \
+    -o jsonpath='{.subsets[0].addresses[0].ip}' 2>/dev/null | grep -q '.'; do
+  sleep 3
+done
+
+# Prevent the mservice webhook from blocking unrelated Service creates during bootstrap
+kubectl patch mutatingwebhookconfiguration aws-load-balancer-webhook --type='json' \
+  -p='[{"op":"replace","path":"/webhooks/2/failurePolicy","value":"Ignore"}]'
 
 echo "==> Step 3: Install External Secrets Operator"
 helm repo add external-secrets https://charts.external-secrets.io
@@ -32,7 +49,7 @@ kubectl apply -f secrets/externalsecret-backend.yaml
 
 echo "==> Step 6: Install ArgoCD"
 kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n argocd --server-side -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl wait --for=condition=available deployment/argocd-server -n argocd --timeout=120s
 
 echo "==> Step 7: Register GitOps repo in ArgoCD"
