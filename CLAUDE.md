@@ -34,8 +34,8 @@ to match what is committed here. Application source code lives in `hashi-netbiz/
 |---|---|
 | AWS Account | `891612574910` |
 | Region | `us-east-1` |
-| VPC | `vpc-081f05b7937f52b5f` (pre-existing, not managed here) |
-| Public Subnets | `subnet-0e9276611273865b0`, `subnet-0a454082366c3f5e8` |
+| VPC | `vpc-0c3dacd09cc795f09` (pre-existing, not managed here) |
+| Public Subnets | `subnet-05cab62ff26b40541`, `subnet-065bc06ec556127ca` |
 | Private Subnets | `subnet-004736621a8b7e673`, `subnet-0af8c9e6d54c3ada4` |
 | EKS Staging Namespace | `rag-staging` |
 | EKS Production Namespace | `rag-prod` |
